@@ -1,0 +1,18 @@
+{
+    "name": "moonfive-dev/client-api",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "MoonfiveDev\\ClientApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jack Darracott",
+            "email": "jack@moonfive.co.uk"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.0"
+    }
+}
