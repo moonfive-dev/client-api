@@ -14,4 +14,11 @@ class ServerCheck
             "disk_usage_percent" => $this->disk_usage_percent,
         ];
     }
+
+    public static function fromArray(array $data): ServerCheck
+    {
+        return new ServerCheck(
+            disk_usage_percent: $data["disk_usage_percent"] ?? null,
+        );
+    }
 }

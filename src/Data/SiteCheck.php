@@ -16,4 +16,12 @@ class SiteCheck
             "current_error_log_count" => $this->current_error_log_count,
         ];
     }
+
+    public static function fromArray(array $data): SiteCheck
+    {
+        return new SiteCheck(
+            prev_error_log_count: $data["prev_error_log_count"] ?? null,
+            current_error_log_count: $data["current_error_log_count"] ?? null,
+        );
+    }
 }
