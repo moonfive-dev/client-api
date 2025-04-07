@@ -10,7 +10,7 @@ class ClientApi
 {
     public function __construct(
         public readonly string $secret,
-        public readonly string $baseUrl,
+        public readonly string $baseUrl = "https://client.moonfive.co.uk/api",
         public readonly ClientInterface $client,
     ) {}
 
