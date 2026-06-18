@@ -6,31 +6,42 @@ use MoonfiveDev\ClientApi\Data\SiteCheck;
 
 class CheckSite
 {
-    public function __construct(public readonly GetLog $getLog) {}
+    public function __construct(
+        public readonly GetLog $getLog,
+    ) {}
 
     public function handle(): SiteCheck
     {
+        $prevErrorLogs = $this->getErrorLinesForDate($this->yesterday());
+        $currentErrorLogs = $this->getErrorLinesForDate($this->today());
+
         return new SiteCheck(
-            prev_error_log_count: $this->getPrevErrorLogCount(),
-            current_error_log_count: $this->getCurrentErrorLogCount(),
+            prev_error_logs: $prevErrorLogs,
+            current_error_logs: $currentErrorLogs,
+            prev_error_log_count: count($prevErrorLogs),
+            current_error_log_count: count($currentErrorLogs),
         );
     }
 
-    private function getErrorLogCount(string $date_iso_string): int
+    /**
+     * @return array<string>
+     */
+    private function getErrorLinesForDate(string $date): array
     {
-        $log = $this->getLog->handle($date_iso_string);
-        $errors = preg_grep("/production.ERROR/", explode("\n", $log));
+        $log = $this->getLog->handle($date);
 
-        return count($errors);
+        return array_values(
+            preg_grep('/production\.ERROR/', explode("\n", $log))
+        );
     }
 
-    private function getPrevErrorLogCount(): int
+    private function today(): string
     {
-        return $this->getErrorLogCount(date("Y-m-d", strtotime("-1 day")));
+        return date('Y-m-d');
     }
 
-    private function getCurrentErrorLogCount(): int
+    private function yesterday(): string
     {
-        return $this->getErrorLogCount(date("Y-m-d"));
+        return date('Y-m-d', strtotime('-1 day'));
     }
 }
