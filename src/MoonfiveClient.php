@@ -21,7 +21,7 @@ class MoonfiveClient
     public function checkSite(int $site_id): array
     {
         return $this->api->checkSite($site_id, (new CheckSite(
-            new GetLog($this->options->logPath)
+            new GetLog($this->options->requireLogPath())
         ))->handle());
     }
 }
